@@ -1,4 +1,3 @@
-import React from "react";
 import Input from "components/inputs/Input";
 import { MdAdminPanelSettings, MdClass } from "react-icons/md";
 import { LuSection } from "react-icons/lu";
@@ -8,21 +7,15 @@ import { useClass } from "store/admincontext/classcontext/ClassContext";
 import { NavLink } from "react-router-dom";
 import Btn from "components/buttons/btn/Btn";
 import HandleBtnSubmit from "components/buttons/handlesubmitbtn/HandleSubmitBtn";
+import MainHeading from "components/heading/mainheading/MainHeading";
 
 const ClassRegister = () => {
   const { state, handleClassChange, handleClassRegister } = useClass();
 
   return (
     <AdminLayout>
-      <div className="p-2">
-        <div
-          className="h-10 w-10 border border-gray-100 rounded-full flex justify-center items-center"
-          title="Admin"
-        >
-          <MdAdminPanelSettings className="text-green-600 text-2xl" />
-        </div>
-      </div>
-      <div className="flex items-center justify-center">
+     <MainHeading title="Class Management"/>
+      <div className="flex items-center justify-center my-1">
         <div className="bg-white border border-gray-200 w-full  rounded-sm shadow-lg p-8">
           <div className="text-center mb-8">
             <div className="flex justify-center items-center">
@@ -39,6 +32,7 @@ const ClassRegister = () => {
           <form onSubmit={handleClassRegister}>
             {/* User Name */}
             <div className="flex flex-wrap gap-1">
+              {/* class  */}
               <div className=" lg:flex-1">
                 <Input
                   id="className"
@@ -52,7 +46,7 @@ const ClassRegister = () => {
                   value={state.register.name}
                 />
               </div>
-              {/* Email */}
+              {/* section */}
               <div className="lg:flex-1">
                 <Input
                   id="sectionName"

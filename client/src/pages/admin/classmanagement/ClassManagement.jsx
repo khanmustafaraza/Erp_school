@@ -1,15 +1,12 @@
-import React from "react";
 import AdminLayout from "layouts/adminlayout/AdminLayout";
 import Card from "../../../components/card/Card";
-import { FaEdit, FaEye, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
 import {
   MdOutlineRateReview,
   MdOutlinePlaylistAdd,
-  MdOutlinePlaylistAddCheck,
-  MdChecklistRtl,
+ 
 } from "react-icons/md";
-import { PiChalkboardTeacher, PiStudentFill } from "react-icons/pi";
 
 const ClassManagement = () => {
   const data = [

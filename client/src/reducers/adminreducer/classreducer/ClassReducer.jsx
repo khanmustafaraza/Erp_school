@@ -19,35 +19,7 @@ const classReducer = (state, action) => {
         ...state,
         classList: action.payload,
       };
-    case "GET_TEACHER_LIST":
-      return {
-        ...state,
-        teacherList: action.payload,
-      };
-
-    case "SET_USER":
-      return {
-        ...state,
-        users: {
-          token: action.payload.token,
-          user: action.payload.user,
-        },
-      };
-
-    case "LOGOUT":
-      return {
-        ...state,
-        users: {
-          token: "",
-          user: null,
-        },
-        loginField: {
-          email: "",
-          password: "",
-          role: "",
-        },
-      };
-
+   
     default:
       return state;
   }

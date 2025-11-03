@@ -56,9 +56,9 @@ const ClassAppProvider = ({ children }) => {
   };
 
   // todo Get all admin list
-  const classList = async () => {
+  const getClassList = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/admin/class/list", {
+      const res = await fetch("http://localhost:3000/api/admin/class/class-list", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -84,7 +84,7 @@ const ClassAppProvider = ({ children }) => {
         state,
         handleClassChange,
         handleClassRegister,
-        classList,
+        getClassList,
       }}
     >
       {children}

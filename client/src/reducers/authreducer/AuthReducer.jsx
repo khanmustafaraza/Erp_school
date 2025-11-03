@@ -11,11 +11,14 @@ const authReducer = (state, action) => {
           [action.payload.name]: action.payload.value,
         },
       };
+      // enquiry list
     case "ENQUIRY_LIST":
       return {
         ...state,
         enquiryList: action.payload,
       };
+
+      // admin add user
     case "ADMIN_USER_CHANGE":
       return {
         ...state,
@@ -25,7 +28,7 @@ const authReducer = (state, action) => {
         },
       };
 
-    // Handle input change in Login form
+    // todo Handle input change in Login form
     case "LOGIN_USER_CHANGE":
       return {
         ...state,
@@ -35,7 +38,7 @@ const authReducer = (state, action) => {
         },
       };
 
-    // Set logged-in user from login or localStorage
+    // todo ============= Set logged-in user from login or localStorage =================
     case "SET_LOGGED_IN_USER":
       return {
         ...state,

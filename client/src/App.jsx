@@ -22,6 +22,7 @@ import ClassManagement from "pages/admin/classmanagement/ClassManagement";
 import ClassRegister from "pages/admin/classmanagement/ClassRegister";
 import ClassList from "pages/admin/classmanagement/ClassList";
 import AdminRoute from "./routes/adminroute/AdminRoute";
+import ClassTeacherRegister from "pages/admin/teachermanagement/ClassTeacherRegister";
 // // ======================= admin routes end ==============================
 
 const App = () => {
@@ -49,6 +50,7 @@ const App = () => {
         <Route path="user-admin-list" element={<UserAdminList />} />
         <Route path="user-teacher-list" element={<UserTeacherList />} />
         <Route path="user-student-list" element={<UserStudentList />} />
+        <Route path="class-teacher-register/:id" element={<ClassTeacherRegister />} />
       </Route>
       {/* **************************  admin routes***************** */}
     </Routes>

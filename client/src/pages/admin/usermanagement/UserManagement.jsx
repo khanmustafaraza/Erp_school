@@ -1,7 +1,7 @@
 import React from "react";
 import AdminLayout from "layouts/adminlayout/AdminLayout";
-import Card from "../../../components/card/Card";
-import { FaEdit, FaEye, FaUser } from "react-icons/fa";
+import Card from "components/card/Card";
+import { FaUser } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
 import {
   MdOutlineRateReview,

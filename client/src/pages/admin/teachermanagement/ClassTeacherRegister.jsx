@@ -8,7 +8,7 @@ import Btn from "components/buttons/btn/Btn";
 import MainHeading from "components/heading/mainheading/MainHeading";
 import { NavLink } from "react-router-dom";
 
-const UserRegister = () => {
+const ClassTeacherRegister = () => {
   const { state, handleUserRegister, handleUserChange } = useAuth();
   return (
     <AdminLayout>
@@ -111,4 +111,4 @@ const UserRegister = () => {
   );
 };
 
-export default UserRegister;
+export default ClassTeacherRegister;

@@ -4,6 +4,7 @@ import { useAuth } from "store/authcontext/AuthContext";
 import Table from "components/datatable/Table";
 import { FaEdit, FaEye, FaSearch, FaTrash } from "react-icons/fa";
 import { useSchool } from "store/admincontext/schoolcontext/SchoolContext";
+import MainHeading from "../../../components/heading/mainheading/MainHeading";
 
 const SchoolList = () => {
   const { state, schoolList } = useSchool();
@@ -137,20 +138,7 @@ const SchoolList = () => {
       <div>
         <div className="bg-white overflow-x-auto transition-all duration-300">
           <div className="flex justify-between">
-            <div className="bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 text-white p-1 rounded-md">
-              <h2 className="text-lg font-semibold">🎯 School Management</h2>
-              <p className="text-sm opacity-90">
-                Manage all School List with ease and style.
-              </p>
-            </div>
-            {/* <div className="border-2 border-gray-100 gap-3 flex items-center w-[350px] px-2 rounded-md">
-              <FaSearch />
-              <input
-                type="text"
-                className="py-0 bg-transparent border-0 outline-0"
-                placeholder="Search Name,phone"
-              />
-            </div> */}
+          <MainHeading title = "School management"/>
           </div>
           <div className="p-1">
             <Table

@@ -5,41 +5,55 @@ import authReducer from "../../reducers/authreducer/AuthReducer";
 //  ========================== Initial state ================================
 const initialState = {
   isLoading: false,
+
+  // todo ============= enquiry details =================
   enquiry: {
     fullName: "",
     phone: "",
     subject: "",
     message: "",
   },
+  // todo ============= enquiry details =================
+  // ! ============= user   details =================
   register: {
     userName: "",
     email: "",
     password: "",
     role: "",
   },
+  // ! ============= user   details =================
   adminList: [],
+
   teacherList: [],
+
   studentList: [],
+
   enquiryList: [],
+  // ? ********************* login details *********************** 
   login: {
     email: "",
     password: "",
     role: "",
   },
+
+  // ! store user inside localstroage
   user: null, // store logged in user info here
 };
 
+// todo =================== create context =========================
 const AuthAppContext = createContext();
 
+// * ================= auth provider global context
 const AuthAppProvider = ({ children }) => {
-  // // ************* use Reducer start **********************
+  // todo ************* use Reducer start **********************
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // // ***************** use Reducer end ********************
+  // ! ***************** use Reducer end ********************
   const navigate = useNavigate();
 
-  // ######################## Load user from localStorage on mount ##########################
+  // todo ######################## Load user from localStorage on mount ##########################
+
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -51,6 +65,7 @@ const AuthAppProvider = ({ children }) => {
   }, []);
 
   // ! ================== handle enquiry change start ================
+
   const handleEnquiryChange = (e) => {
     const { name, value } = e.target;
     dispatch({
@@ -59,6 +74,8 @@ const AuthAppProvider = ({ children }) => {
     });
   };
   // ! ================== handle enquiry change  end ================
+
+
   // todo *********************** handle enquiry submit start *********************
   const handleEnquirySubmit = async (e) => {
     e.preventDefault();
@@ -79,6 +96,8 @@ const AuthAppProvider = ({ children }) => {
   // todo *********************** handle enquiry submit end *****************
 
   // ! ************** get enquiry list ****************
+
+
   const enquiryList = async (value = "") => {
     console.log(value);
     try {
@@ -93,11 +112,16 @@ const AuthAppProvider = ({ children }) => {
     }
   };
   // ! ************** get enquiry list ****************
-  // Handle admin change a new user
+
+
+  // todo ===============  Handle admin change a new user ======================
+
   const handleUserChange = (e) => {
     const { name, value } = e.target;
     dispatch({ type: "ADMIN_USER_CHANGE", payload: { name, value } });
   };
+
+  // ! **************** handle user submit by admin ***************
 
   const handleUserRegister = async (e) => {
     e.preventDefault();
@@ -114,44 +138,7 @@ const AuthAppProvider = ({ children }) => {
       alert(error.message);
     }
   };
-
-  // Fetch lists
-  const getAdminList = async () => {
-    try {
-      const res = await fetch(
-        "http://localhost:3000/api/admin/user/admin-list"
-      );
-      const data = await res.json();
-      if (data.success)
-        dispatch({ type: "GET_ADMIN_LIST", payload: data.data });
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-  const getTeacherList = async () => {
-    try {
-      const res = await fetch(
-        "http://localhost:3000/api/admin/user/teacher-list"
-      );
-      const data = await res.json();
-      if (data.success)
-        dispatch({ type: "GET_TEACHER_LIST", payload: data.data });
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-  const getStudentList = async () => {
-    try {
-      const res = await fetch(
-        "http://localhost:3000/api/admin/user/student-list"
-      );
-      const data = await res.json();
-      if (data.success)
-        dispatch({ type: "GET_STUDENT_LIST", payload: data.data });
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
+  // ! **************** handle user submit by admin ***************
 
   //!==================== Handle login change start ==========================
 
@@ -187,7 +174,7 @@ const AuthAppProvider = ({ children }) => {
         // Redirect based on role
         switch (loginObj.role) {
           case "admin":
-            navigate("/admin/dashboard");
+            navigate("/admin/admin-dashboard");
             break;
           case "teacher":
             navigate("/teacher/teacher-dashboard");
@@ -207,6 +194,53 @@ const AuthAppProvider = ({ children }) => {
   };
 
   // todo ????????????????? login user submit end ??????????????????
+
+  
+  // todo ================ get admin list ======================
+  const getAdminList = async () => {
+    try {
+      const res = await fetch(
+        "http://localhost:3000/api/admin/user/admin-list"
+      );
+      const data = await res.json();
+      if (data.success)
+        dispatch({ type: "GET_ADMIN_LIST", payload: data.data });
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  // todo ================ get admin list ======================
+
+  // ? ???????????????????? get teacher list ?????????????????????????
+  const getTeacherList = async () => {
+    try {
+      const res = await fetch(
+        "http://localhost:3000/api/admin/user/teacher-list"
+      );
+      const data = await res.json();
+      if (data.success)
+        dispatch({ type: "GET_TEACHER_LIST", payload: data.data });
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  // ? ???????????????????? get teacher list ?????????????????????????
+  // ! ================================== get student list =========================
+  const getStudentList = async () => {
+    try {
+      const res = await fetch(
+        "http://localhost:3000/api/admin/user/student-list"
+      );
+      const data = await res.json();
+      if (data.success)
+        dispatch({ type: "GET_STUDENT_LIST", payload: data.data });
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  // ! ================================== get student list =========================
+
+  
 
   return (
     <AuthAppContext.Provider
