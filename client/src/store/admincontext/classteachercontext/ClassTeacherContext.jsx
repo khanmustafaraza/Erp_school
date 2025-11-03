@@ -1,55 +1,60 @@
-import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import schoolReducer from "../../../reducers/adminreducer/schoolreducer/SchoolReducer";
+import React, { createContext, useContext, useEffect, useReducer } from "react";
+import classTeacherReducer from "../../../reducers/adminreducer/classteacherreducer/ClassTeacherReducer";
 
-//  ========================== Initial state ================================
+// // Initial state
 const initialState = {
   isLoading: false,
-  school: {
-    name: "",
-    subName: "",
-    code: "",
-    affiCode: "",
-    board: "",
-    address: "",
-    email: "",
-    contact: "",
-  },
+  register: {
+    classId: "",
+    mobile: "",
 
-  schoolList: [],
+    fullName: "",
+    email: "",
+    subjects: "",
+    qualification: "",
+    experience: "",
+    salary: "",
+    aadhaar: "",
+    marital: "",
+    address: "",
+  },
+  classTeacherList: [],
 };
 
-const SchoolAppContext = createContext();
+// todo Create context
+const ClassTeacherAppContext = createContext();
 
-const SchoolAppProvider = ({ children }) => {
-  // // ************* use Reducer start **********************
+// ? Provider component
+const ClassTeacherAppProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(classTeacherReducer, initialState);
 
-  const [state, dispatch] = useReducer(schoolReducer, initialState);
-
-  // // ***************** use Reducer end ********************
-  const navigate = useNavigate();
-
-  // ! ================== handle enquiry change start ================
-  const handleSchoolChange = (e) => {
-    const { name, value } = e.target;
-    dispatch({
-      type: "SCHOOL_CHANGE",
-      payload: { name, value },
-    });
+  // todo Register a New Class Change By Admin
+  const handleClassTeacherChange = (e) => {
+    try {
+      const { name, value } = e.target;
+      // console.log(name, "????", value);
+      dispatch({
+        type: "ADMIN_CLASS_TEACHER_CHANGE",
+        payload: { name, value },
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
-  // ! ================== handle enquiry change  end ================
-  // todo *********************** handle enquiry submit start *********************
-  const handleSchoolRegister = async (e) => {
+  // // submit class by admin
+  const handleClassTeacherRegister = async (e, userId) => {
     e.preventDefault();
-    const schoolObj = { ...state.school };
-
+    const classTeacherObj = { ...state.register, userId };
+    console.log(classTeacherObj);
     try {
       const res = await fetch(
-        "http://localhost:3000/api/admin/school/register",
+        "http://localhost:3000/api/admin/classteacher/register",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(schoolObj),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(classTeacherObj),
         }
       );
       const data = await res.json();
@@ -58,43 +63,57 @@ const SchoolAppProvider = ({ children }) => {
       alert(error.message);
     }
   };
-  // todo *********************** handle enquiry submit end *****************
 
-  // ! ************** get school list ****************
-  const schoolList = async (value = " ") => {
+  // todo Get all admin list
+  const getClassTeacherList = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/admin/school/school-list`
+        "http://localhost:3000/api/admin/classteacher/class-teacher-list",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       const data = await res.json();
-
-      if (data.success) dispatch({ type: "SCHOOL_LIST", payload: data.data });
+      // console.log(data);
+      if (data.success) {
+        dispatch({
+          type: "GET_CLASS_TEACHER_LIST",
+          payload: data.data,
+        });
+      }
     } catch (error) {
-      console.error(error.message);
+      console.log(error.message);
+      alert(error.message);
     }
   };
-  // ! ************** get school list ****************
+  useEffect(() => {
+    getClassTeacherList();
+  }, []);
 
   return (
-    <SchoolAppContext.Provider
+    <ClassTeacherAppContext.Provider
       value={{
         state,
-        handleSchoolChange,
-        handleSchoolRegister,
-        schoolList,
+        handleClassTeacherChange,
+        handleClassTeacherRegister,
+        getClassTeacherList,
       }}
     >
       {children}
-    </SchoolAppContext.Provider>
+    </ClassTeacherAppContext.Provider>
   );
 };
 
-// Custom hook
-const useSchool = () => {
-  const context = useContext(SchoolAppContext);
-  if (!context)
-    throw new Error("useAuth must be used within SchoolAppProvider");
+// // Custom hook to use the auth context
+const useClassTeacher = () => {
+  const context = useContext(ClassTeacherAppContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthAppProvider");
+  }
   return context;
 };
 
-export { SchoolAppProvider, useSchool };
+export { ClassTeacherAppProvider, useClassTeacher };

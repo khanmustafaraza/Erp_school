@@ -1,18 +1,51 @@
-const schoolReducer = (state, action) => {
+// ! Reducer function to handle state updates
+const classTeacherReducer = (state, action) => {
   switch (action.type) {
-    // Handle input change in Admin Register form
-    case "SCHOOL_CHANGE":
+    case "SET_LOADING":
+      return { ...state, isLoading: action.payload };
+
+    // todo handle change of user by admin
+    case "ADMIN_CLASS_TEACHER_CHANGE":
       return {
         ...state,
-        school: {
-          ...state.school,
+        register: {
+          ...state.register,
           [action.payload.name]: action.payload.value,
         },
       };
-    case "SCHOOL_LIST":
+    // todo Get class list
+    case "GET_CLASS_TEACHER_LIST":
       return {
         ...state,
-        schoolList: action.payload,
+        classTeacherList: action.payload,
+      };
+    case "GET_TEACHER_LIST":
+      return {
+        ...state,
+        teacherList: action.payload,
+      };
+
+    case "SET_USER":
+      return {
+        ...state,
+        users: {
+          token: action.payload.token,
+          user: action.payload.user,
+        },
+      };
+
+    case "LOGOUT":
+      return {
+        ...state,
+        users: {
+          token: "",
+          user: null,
+        },
+        loginField: {
+          email: "",
+          password: "",
+          role: "",
+        },
       };
 
     default:
@@ -20,4 +53,4 @@ const schoolReducer = (state, action) => {
   }
 };
 
-export default schoolReducer;
+export default classTeacherReducer;

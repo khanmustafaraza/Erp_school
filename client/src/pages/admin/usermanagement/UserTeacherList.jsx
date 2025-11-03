@@ -57,13 +57,13 @@ const UserTeacherList = () => {
           {/* View */}
 
           {/* Edit */}
-          <button
-            onClick={() => handleEdit(row)}
+          <NavLink
+            to={`/admin/class-teacher-register/${row._id}`}
             className="bg-linear-to-r from-green-400 to-green-500 hover:from-yellow-500 hover:to-yellow-600 text-white px-3 py-2 rounded-sm shadow-md hover:scale-105 transition-transform"
-            title="Edit"
+            title="Add Class Teacher"
           >
             <FaEdit />
-          </button>
+          </NavLink>
 
           {/* Delete */}
           <button
@@ -88,16 +88,14 @@ const UserTeacherList = () => {
   }, []);
   return (
     <AdminLayout>
-      
-        <div className="bg-white overflow-x-auto transition-all duration-300">
-          <MainHeading title ="User Management"/>
-          <div className="p-1">
-            <NavLink to ="/admin/user-management">
-
-          <div className="w-[150px] ml-auto">
-            <Btn text="All  List" icon={<FaList />} />
-          </div>
-</NavLink>
+      <div className="bg-white overflow-x-auto transition-all duration-300">
+        <MainHeading title="User Management" />
+        <div className="p-1">
+          <NavLink to="/admin/user-management">
+            <div className="w-[150px] ml-auto">
+              <Btn text="All  List" icon={<FaList />} />
+            </div>
+          </NavLink>
           <div className="p-1">
             <Table
               title="Enquiry List"

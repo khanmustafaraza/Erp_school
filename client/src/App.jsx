@@ -50,7 +50,10 @@ const App = () => {
         <Route path="user-admin-list" element={<UserAdminList />} />
         <Route path="user-teacher-list" element={<UserTeacherList />} />
         <Route path="user-student-list" element={<UserStudentList />} />
-        <Route path="class-teacher-register/:id" element={<ClassTeacherRegister />} />
+        <Route
+          path="class-teacher-register/:id"
+          element={<ClassTeacherRegister />}
+        />
       </Route>
       {/* **************************  admin routes***************** */}
     </Routes>

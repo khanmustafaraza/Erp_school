@@ -4,7 +4,25 @@ const ClassTeacher = require("../models/classTeacherModel");
 
 const classTeacherRegister = async (req, res) => {
   try {
-    const { userId, classId } = req.body;
+    let {
+      userId,
+      classId,
+      mobile,
+      fullName,
+      email,
+      subjects, // might be a string like "Math, English, Science"
+      qualification,
+      experience,
+      salary,
+      aadhaar,
+      marital,
+      address,
+    } = req.body;
+
+    // ✅ Convert comma-separated string to array
+    if (typeof subjects === "string") {
+      subjects = subjects.split(",");
+    }
 
     if (!userId || !classId) {
       return res.status(403).json({
@@ -13,16 +31,40 @@ const classTeacherRegister = async (req, res) => {
       });
     }
 
+    // Check if already exists
+    const existClassTeacher = await ClassTeacher.findOne({ userId, classId });
+    if (existClassTeacher) {
+      return res.status(400).json({
+        success: false,
+        message: "Class Teacher already assigned to this class",
+      });
+    }
+
+    // Save to DB
     const newClassTeacher = new ClassTeacher({
       userId,
       classId,
+      mobile,
+      fullName,
+      email,
+      subjects, // ✅ now always an array
+      qualification,
+      experience,
+      salary,
+      aadhaar,
+      marital,
+      address,
     });
+
     await newClassTeacher.save();
+
     return res.status(201).json({
       success: true,
-      message: "Class Teacher Created Successfylly",
+      message: "Class Teacher Created Successfully",
+      data: newClassTeacher,
     });
   } catch (error) {
+    console.error("Error:", error);
     return res.status(500).json({
       success: false,
       message: "Error while registration due to network",

@@ -6,13 +6,16 @@ import "./index.css";
 import { AuthAppProvider } from "store/authcontext/AuthContext.jsx";
 import { SchoolAppProvider } from "store/admincontext/schoolcontext/SchoolContext.jsx";
 import { ClassAppProvider } from "store/admincontext/classcontext/ClassContext.jsx";
+import { ClassTeacherAppProvider } from "./store/admincontext/classteachercontext/ClassTeacherContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AuthAppProvider>
       <SchoolAppProvider>
         <ClassAppProvider>
-          <App />
+          <ClassTeacherAppProvider>
+            <App />
+          </ClassTeacherAppProvider>
         </ClassAppProvider>
       </SchoolAppProvider>
     </AuthAppProvider>
