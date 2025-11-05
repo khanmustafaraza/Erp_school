@@ -45,7 +45,7 @@ const ClassTeacherAppProvider = ({ children }) => {
   const handleClassTeacherRegister = async (e, userId) => {
     e.preventDefault();
     const classTeacherObj = { ...state.register, userId };
-    console.log(classTeacherObj);
+
     try {
       const res = await fetch(
         "http://localhost:3000/api/admin/classteacher/register",
@@ -77,7 +77,7 @@ const ClassTeacherAppProvider = ({ children }) => {
         }
       );
       const data = await res.json();
-      // console.log(data);
+      console.log(data.data);
       if (data.success) {
         dispatch({
           type: "GET_CLASS_TEACHER_LIST",
@@ -89,10 +89,32 @@ const ClassTeacherAppProvider = ({ children }) => {
       alert(error.message);
     }
   };
-  useEffect(() => {
-    getClassTeacherList();
-  }, []);
 
+  const getClassTeacherDetail = async (id) => {
+    console.log(id);
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/admin/classteacher/class-teacher-detail/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await res.json();
+      console.log(data.data);
+      if (data.success) {
+        dispatch({
+          type: "GET_CLASS_TEACHER_DETAIL",
+          payload: data.data,
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+      alert(error.message);
+    }
+  };
   return (
     <ClassTeacherAppContext.Provider
       value={{
@@ -100,6 +122,7 @@ const ClassTeacherAppProvider = ({ children }) => {
         handleClassTeacherChange,
         handleClassTeacherRegister,
         getClassTeacherList,
+        getClassTeacherDetail,
       }}
     >
       {children}

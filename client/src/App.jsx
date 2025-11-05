@@ -23,6 +23,7 @@ import ClassRegister from "pages/admin/classmanagement/ClassRegister";
 import ClassList from "pages/admin/classmanagement/ClassList";
 import AdminRoute from "./routes/adminroute/AdminRoute";
 import ClassTeacherRegister from "pages/admin/teachermanagement/ClassTeacherRegister";
+import ClassTeacherList from "./pages/admin/teachermanagement/ClassTeacherList";
 // // ======================= admin routes end ==============================
 
 const App = () => {
@@ -54,6 +55,7 @@ const App = () => {
           path="class-teacher-register/:id"
           element={<ClassTeacherRegister />}
         />
+        <Route path="class-teacher-list" element={<ClassTeacherList />} />
       </Route>
       {/* **************************  admin routes***************** */}
     </Routes>

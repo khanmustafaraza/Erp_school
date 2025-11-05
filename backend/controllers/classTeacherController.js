@@ -1,6 +1,7 @@
 const Class = require("../models/classModel");
 const User = require("../models/userModel");
 const ClassTeacher = require("../models/classTeacherModel");
+const mongoose = require("mongoose");
 
 const classTeacherRegister = async (req, res) => {
   try {
@@ -31,16 +32,19 @@ const classTeacherRegister = async (req, res) => {
       });
     }
 
-    console.log(userId)
+    console.log(userId);
     // Check if already exists
-    const existClassTeacher = await ClassTeacher.findOne({ $or :[
-      {
-        classId:classId
-      },{
-        userId:userId
-      }
-    ] });
-   
+    const existClassTeacher = await ClassTeacher.findOne({
+      $or: [
+        {
+          classId: classId,
+        },
+        {
+          userId: userId,
+        },
+      ],
+    });
+
     if (existClassTeacher) {
       return res.status(400).json({
         success: false,
@@ -80,8 +84,6 @@ const classTeacherRegister = async (req, res) => {
   }
 };
 
-
-
 const classTeacherList = async (req, res) => {
   try {
     const data = await ClassTeacher.aggregate([
@@ -90,8 +92,8 @@ const classTeacherList = async (req, res) => {
           from: "classes",
           localField: "classId",
           foreignField: "_id",
-          as: "classList"
-        }
+          as: "classList",
+        },
       },
       { $unwind: "$classList" },
       {
@@ -99,8 +101,8 @@ const classTeacherList = async (req, res) => {
           from: "users",
           localField: "userId",
           foreignField: "_id",
-          as: "userList"
-        }
+          as: "userList",
+        },
       },
       { $unwind: "$userList" },
 
@@ -109,32 +111,103 @@ const classTeacherList = async (req, res) => {
         $replaceRoot: {
           newRoot: {
             $mergeObjects: [
-              "$$ROOT",          // the original ClassTeacher document
-              "$classList",      // merged class data
-              "$userList"        // merged user data
-            ]
-          }
-        }
+              "$userList",
+              "$classList",
+              "$$ROOT", // the original ClassTeacher document
+              // merged user data
+            ],
+          },
+        },
       },
 
       // optional: remove now-unnecessary fields
       {
         $project: {
           classList: 0,
-          userList: 0
-        }
-      }
+          userList: 0,
+          password: 0,
+        },
+      },
     ]);
 
-    console.log(data)
+    console.log(data);
     res.status(200).json({
       success: true,
-      data
+      data: data,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
+    });
+  }
+};
+
+const classTeacherDetail = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Convert the id from string to ObjectId
+    const objectId = new mongoose.Types.ObjectId(id);
+
+    const data = await ClassTeacher.aggregate([
+      { $match: { _id: objectId } },
+
+      {
+        $lookup: {
+          from: "classes",
+          localField: "classId",
+          foreignField: "_id",
+          as: "classList",
+        },
+      },
+      { $unwind: { path: "$classList", preserveNullAndEmptyArrays: true } },
+
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "userList",
+        },
+      },
+      { $unwind: { path: "$userList", preserveNullAndEmptyArrays: true } },
+
+      // Optional: rename original _id to avoid confusion
+      {
+        $addFields: {
+          classTeacherId: "$_id",
+        },
+      },
+
+      // Merge all data
+      {
+        $replaceRoot: {
+          newRoot: {
+            $mergeObjects: ["$userList", "$classList", "$$ROOT"],
+          },
+        },
+      },
+
+      // Clean up
+      {
+        $project: {
+          classList: 0,
+          userList: 0,
+          password: 0,
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: data[0] || null, // return single object
+    });
+  } catch (error) {
+    console.error("Error fetching class teacher details:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
     });
   }
 };
@@ -142,4 +215,5 @@ const classTeacherList = async (req, res) => {
 module.exports = {
   classTeacherRegister,
   classTeacherList,
+  classTeacherDetail,
 };
